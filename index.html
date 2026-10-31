@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Вика, это тебе! 🦄</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%}
+body{margin:0;min-height:100%;font-family:"Comic Sans MS","Chalkboard SE","Marker Felt","Trebuchet MS",sans-serif;color:#fff;background:#14052e;overflow-x:hidden;text-align:center}
+.sky{position:fixed;inset:0;z-index:0;background:
+ linear-gradient(180deg,rgba(20,5,46,.15) 0%,rgba(20,5,46,.55) 100%),
+ linear-gradient(120deg,#ff3d6e,#ff9a3d,#ffe24a,#4be37a,#3dc8ff,#8a5cff,#ff3dd0,#ff3d6e);
+ background-size:100% 100%;animation:flow 18s ease-in-out infinite alternate}
+@keyframes flow{from{filter:hue-rotate(0deg)}to{filter:hue-rotate(70deg)}}
+canvas{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.rainbow{position:fixed;left:50%;bottom:-40vmin;width:150vmin;height:150vmin;transform:translateX(-50%);border-radius:50%;z-index:0;opacity:.55;
+ background:radial-gradient(circle,transparent 0 52%,#ff3d3d 52% 56%,#ff9a3d 56% 60%,#ffe24a 60% 64%,#4be37a 64% 68%,#3dc8ff 68% 72%,#8a5cff 72% 76%,transparent 76%)}
+.uni{position:fixed;z-index:1;font-size:clamp(36px,9vw,64px);pointer-events:none;animation:float 6s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-12px) rotate(4deg)}}
+main{position:relative;z-index:2;max-width:560px;margin:0 auto;padding:28px 18px 60px}
+h1{font-size:clamp(34px,10vw,56px);line-height:1.1;margin:10px 0 6px;text-shadow:0 3px 0 #ff3dd0,0 6px 14px rgba(0,0,0,.45)}
+.sub{font-size:18px;margin:0 0 22px;text-shadow:0 2px 6px rgba(0,0,0,.5)}
+.card{background:rgba(20,5,46,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:3px solid #fff;border-radius:28px;padding:20px 18px;margin:0 0 18px}
+.wish{font-size:clamp(20px,5.6vw,26px);min-height:3.6em;display:flex;align-items:center;justify-content:center;margin:0 0 14px;line-height:1.3;transition:opacity .35s ease}
+button{font:inherit;font-size:20px;color:#fff;border:0;border-radius:999px;padding:14px 26px;cursor:pointer;background:linear-gradient(90deg,#ff3d6e,#ff9a3d,#ffe24a);color:#3a0a4a;font-weight:700;box-shadow:0 5px 0 #8a1b6a;touch-action:manipulation}
+button:active{transform:translateY(4px);box-shadow:0 1px 0 #8a1b6a}
+button:focus-visible{outline:4px solid #fff;outline-offset:3px}
+ul{list-style:none;padding:0;margin:0;display:grid;gap:10px;text-align:left}
+li{background:rgba(255,255,255,.14);border-radius:18px;padding:12px 14px;font-size:18px}
+.ps{font-size:16px;margin-top:18px;text-shadow:0 2px 6px rgba(0,0,0,.6)}
+@media (prefers-reduced-motion:reduce){.sky,.uni{animation:none}}
+</style>
+</head>
+<body>
+<div class="sky"></div>
+<div class="rainbow"></div>
+<div class="rainbow" style="bottom:auto;top:-95vmin;transform:translateX(-50%) rotate(180deg);opacity:.4"></div>
+<canvas id="fx"></canvas>
+<div id="deco"></div>
+
+<main>
+  <h1>Вика!!! 🎆<br>Это тебе!</h1>
+  <p class="sub">Специальный выпуск: срочные пожелания от единорогов</p>
+
+  <div class="card">
+    <p class="wish" id="wish">Нажми на кнопку — и салют не заставит себя ждать 🎇</p>
+    <button id="btn">Получить пожелание 🦄</button>
+  </div>
+
+  <div class="card">
+    <ul>
+      <li>💪 Здоровья как у единорога: чтобы ничего не болело, кроме смеха от шуток</li>
+      <li>💰 Денег столько, чтобы радуга была не только в небе, но и в кошельке</li>
+      <li>❤️ Любви — и от людей, и от котиков, и от вкусной еды</li>
+      <li>😎 Настроения «мне всё по плечу, а если не по плечу — то по рогу»</li>
+      <li>🍀 Удачи в каждом деле, а проблем пусть будет ноль и те — маленькие</li>
+    </ul>
+  </div>
+
+  <p class="ps">Ты лучшая, Вика! Жми на экран — там салют 🎆<br>Твой Валера-единорог не забывает о тебе 🌈</p>
+</main>
+
+<script>
+(function(){
+  var wishes=[
+    "Вика, будь здорова как лошадь! Нет, как единорог — он ещё и красивый 🦄",
+    "Пусть все твои проблемы улетят в космос вместе с салютом 🚀🎆",
+    "Желаю радуги на каждый день и ни одной тучи без причины 🌈",
+    "Пусть сбываются все желания, даже те, которые ты загадала шёпотом 🤫✨",
+    "Улыбайся чаще: у тебя это получается лучше, чем у всех единорогов 😄",
+    "Пусть вся еда будет вкусной, а калории — исключительно воображаемыми 🍰",
+    "Здоровья, счастья, любви и чтобы Wi-Fi всегда ловил! 📶💖",
+    "Ты сияешь ярче любого салюта, Вика! Не вздумай потухнуть 🎇"
+  ];
+  var deco=document.getElementById("deco"),em=["🦄","🦄","🌈","🦄","🌈"];
+  for(var d=0;d<16;d++){var s=document.createElement("div");s.className="uni";s.textContent=em[d%em.length];s.style.left=(Math.random()*92)+"%";s.style.top=(Math.random()*88)+"%";s.style.animationDelay=(-Math.random()*6)+"s";s.style.fontSize=(30+Math.random()*40)+"px";deco.appendChild(s)}
+  var i=-1,el=document.getElementById("wish");
+  var cv=document.getElementById("fx"),cx=cv.getContext("2d"),W,H,dpr=Math.min(window.devicePixelRatio||1,2);
+  function size(){W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0)}
+  size();addEventListener("resize",size);
+  var parts=[],rockets=[];
+  function burst(x,y){
+    var hue=Math.random()*360,n=60;
+    for(var k=0;k<n;k++){
+      var a=Math.PI*2*k/n,s=1.5+Math.random()*3.5;
+      parts.push({x:x,y:y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,l:1,h:(hue+Math.random()*60)%360});
+    }
+  }
+  function launch(x){
+    rockets.push({x:x||Math.random()*W,y:H,ty:H*(.15+Math.random()*.35),vy:-7-Math.random()*3});
+  }
+  function frame(){
+    cx.globalCompositeOperation="destination-out";
+    cx.fillStyle="rgba(0,0,0,.22)";cx.fillRect(0,0,W,H);
+    cx.globalCompositeOperation="lighter";
+    for(var r=rockets.length-1;r>=0;r--){
+      var o=rockets[r];o.y+=o.vy;
+      cx.fillStyle="#fff";cx.fillRect(o.x-1.5,o.y,3,10);
+      if(o.y<=o.ty){burst(o.x,o.y);rockets.splice(r,1)}
+    }
+    for(var p=parts.length-1;p>=0;p--){
+      var q=parts[p];q.x+=q.vx;q.y+=q.vy;q.vy+=.05;q.vx*=.99;q.l-=.012;
+      if(q.l<=0){parts.splice(p,1);continue}
+      cx.fillStyle="hsla("+q.h+",100%,60%,"+q.l+")";
+      cx.beginPath();cx.arc(q.x,q.y,2.4,0,6.3);cx.fill();
+    }
+    requestAnimationFrame(frame);
+  }
+  frame();
+  function show(){
+    var j;do{j=Math.floor(Math.random()*wishes.length)}while(j===i);
+    i=j;el.style.opacity=0;setTimeout(function(){el.textContent=wishes[i];el.style.opacity=1},350);
+    for(var k=0;k<4;k++)setTimeout(launch,k*180);
+  }
+  document.getElementById("btn").addEventListener("click",show);
+  addEventListener("pointerdown",function(e){
+    if(e.target.closest("button"))return;
+    launch(e.clientX);
+  });
+  var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  setInterval(function(){if(!reduce)launch()},1600);
+  setTimeout(function(){for(var k=0;k<3;k++)setTimeout(launch,k*250)},400);
+})();
+</script>
+</body>
+</html>
